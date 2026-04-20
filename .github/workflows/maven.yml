@@ -22,3 +22,14 @@ jobs:
 
       - name: Build with Maven
         run: mvn -B package --file demo/pom.xml -DskipTests
+
+      - name: Build & push Docker image
+        uses: mr-smithers-excellent/docker-build-push@v6
+        with:
+          image: hvquocanh123/intern-java-ci-cd
+          tags: latest
+          registry: docker.io
+          dockerfile: demo/Dockerfile
+          directory: demo
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
