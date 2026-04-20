@@ -1,7 +1,7 @@
 services:
   mysql:
     image: mysql:8.0
-    container_name: mysql_db
+    container_name: mysql
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: 180703
@@ -11,13 +11,13 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
-      interval: 10s
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p180703"]
+      interval: 5s
       timeout: 5s
-      retries: 5
+      retries: 10
 
   app:
-    build: .
+    image: hvquocanh123/intern-java-ci-cd:latest
     container_name: spring_app
     depends_on:
       mysql:
@@ -25,7 +25,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/library_db
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/library_db?allowPublicKeyRetrieval=true&useSSL=false
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 180703
 
