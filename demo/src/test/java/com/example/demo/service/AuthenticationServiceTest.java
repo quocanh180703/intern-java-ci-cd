@@ -43,7 +43,7 @@ class AuthenticationServiceTest {
         mockUser = User.builder()
                 .username("tung_user")
                 .password(passwordEncoder.encode("password123")) // Mật khẩu thật là password123
-                .roles(Set.of("USER"))
+                .roles(Set.of())
                 .build();
     }
 
@@ -66,7 +66,7 @@ class AuthenticationServiceTest {
         var exception = Assertions.assertThrows(AppException.class,
                 () -> authenticationService.authenticate(request));
 
-        Assertions.assertEquals(ErrorCode.USER_NOT_EXITED, exception.getErrorCode());
+        Assertions.assertEquals(ErrorCode.USER_NOT_EXISTED, exception.getErrorCode());
     }
 
     @Test

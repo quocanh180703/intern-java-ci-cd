@@ -17,8 +17,17 @@ public class Item {
     @Column(nullable = false)
     private String title;
 
+    @Column(unique = true)
+    private String isbn;
+
     private String type;
     private String author;
+
+    @Column(nullable = false)
+    private int totalCopies = 1;
+
+    @Column(nullable = false)
+    private int availableCopies = 1;
 
     public Item() {}
 
@@ -26,5 +35,7 @@ public class Item {
         this.title = title;
         this.type = type;
         this.author = author;
+        this.totalCopies = 1;
+        this.availableCopies = 1;
     }
 }

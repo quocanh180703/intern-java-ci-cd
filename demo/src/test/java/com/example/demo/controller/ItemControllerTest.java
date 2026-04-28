@@ -10,6 +10,8 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -121,5 +123,23 @@ class ItemControllerTest {
         mockMvc.perform(delete("/items/1")
                         .with(csrf()))
                 .andExpect(status().isNoContent()); // 204
+    }
+
+    @Test
+    @WithMockUser
+    void testSearchPaged() throws Exception {
+        Item item = new Item();
+        item.setId(1);
+        item.setTitle("Java");
+
+        when(service.searchPaged(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(PageRequest.class)))
+                .thenReturn(new PageImpl<>(List.of(item)));
+
+        mockMvc.perform(get("/items/search")
+                        .param("title", "java")
+                        .param("page", "0")
+                        .param("size", "10"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.result.content[0].title").value("Java"));
     }
 }

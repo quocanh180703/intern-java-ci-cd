@@ -1,5 +1,8 @@
-> How to run docker compose
+[//]: # (> How to run docker compose)
 
-```bash
-docker compose up --build
-```
+[//]: # ()
+[//]: # (```bash)
+
+[//]: # (docker compose up --build)
+
+[//]: # (```)
